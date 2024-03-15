@@ -1,5 +1,7 @@
 #define SensorPin A0
-#define 
+#define WaterPump1Pin 9
+#define WaterPump2Pin 10
+#define WaterPump3Pin 11
 String incomingData;
 unsigned long int avgValue;
 float b;
@@ -17,14 +19,28 @@ void loop() {
     incomingData = Serial.readStringUntil('\n');
     if(incomingData=="A"){
       Serial.println("Turn on water out and water in");
+      digitalWrite(WaterPump1Pin, HIGH); // Turn on water pump 1
+      digitalWrite(WaterPump2Pin, HIGH); // Turn on water pump 2
       delay(1000);
     }
     else if(incomingData=="B"){
       Serial.println("Turning on water out and chlorine in");
+      digitalWrite(WaterPump1Pin, HIGH); // Turn on water pump 1
+      digitalWrite(WaterPump3Pin, HIGH); // Turn on water pump 3
       delay(1000);
+    }
+    else if(incomingData=="O"){
+      Serial.println("All Good");
+      digitalWrite(WaterPump1Pin,LOW);
+      digitalWrite(WaterPump2Pin,LOW);
+      digitalWrite(WaterPump3Pin,LOW);
     }
     else{
       Serial.println("Checking for Errors");
+      // Turn off all pumps if there's an error
+      digitalWrite(WaterPump1Pin, LOW);
+      digitalWrite(WaterPump2Pin, LOW);
+      digitalWrite(WaterPump3Pin, LOW);
       delay(1000);
     }
     delay(5000);
