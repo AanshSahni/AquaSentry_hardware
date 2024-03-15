@@ -1,4 +1,5 @@
 import serial.tools.list_ports
+import time
 
 ports = serial.tools.list_ports.comports()
 serialInst = serial.Serial()
@@ -38,21 +39,25 @@ while True:
             Chlorine_to_be_added = (Volume * (desired_pH - ph) * dilution_factor) / (chlorine_concentration * 10)
             print("Chlorine : ", Chlorine_to_be_added)
             Delay_in_seconds = (Chlorine_to_be_added * Volume) / (flow * 3600)
-            delay = str(Delay_in_seconds)
+
+            # Convert delay to milliseconds
+            delay_ms = int(Delay_in_seconds * 1000)
 
             # Check pH level and send commands accordingly
             if 7.20 <= ph <= 7.60:
                 print("The pH of the pool is optimal")
                 serialInst.write("O".encode())
-                serialInst.write('')
+                serialInst.write(b'')  # Placeholder for empty delay
             elif ph < 7.20:
                 print("The pool is too acidic")
                 serialInst.write("A".encode())
-                serialInst.write(delay)
+                serialInst.write(str(delay_ms).encode())  # Send delay value in milliseconds as string
+                print(delay_ms)
             elif ph > 7.60:
                 print("The pool is too basic")
                 serialInst.write("B".encode())
-                serialInst.write(delay)
+                serialInst.write(str(delay_ms).encode())  # Send delay value in milliseconds as string
+                print(delay_ms)
             else:
                 print("Error: Invalid pH value")
         except ValueError:
