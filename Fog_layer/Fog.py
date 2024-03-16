@@ -24,7 +24,6 @@ dilution_factor = 5.6
 desired_pH = 7.4
 Volume = 1.4
 chlorine_concentration = 5000
-flow = 120
 
 while True:
     if serialInst.in_waiting:
@@ -35,18 +34,7 @@ while True:
         try:
             ph = float(ph_data)
             print("pH:", ph_data)
-            ph = float(ph_data)
-            Chlorine_to_be_added = (Volume * (desired_pH - ph) * dilution_factor) / (chlorine_concentration * 10)
-            print("Chlorine : ", Chlorine_to_be_added)
-            chlorine_volume = Chlorine_to_be_added / 1.05
-    
-            # Calculate delay in seconds
-            Delay_in_seconds = (chlorine_volume / (flow * 3600)) * Volume
-
-            # Convert delay to milliseconds
-            delay_ms = int(Delay_in_seconds * 1000)
-
-            # Check pH level and send commands accordingly
+            ph = float(ph_data)_
             if 7.20 <= ph <= 7.60:
                 print("The pH of the pool is optimal")
                 serialInst.write("O".encode())
@@ -54,33 +42,12 @@ while True:
             elif ph < 5.20:
                 print("The pool is too acidic")
                 serialInst.write("A".encode())
-                serialInst.write(str(delay_ms).encode())  # Send delay value in milliseconds as string
-                print(delay_ms)
             elif ph > 9.0:
                 print("The pool is too basic")
                 serialInst.write("B".encode())
-                serialInst.write(str(delay_ms).encode())  # Send delay value in milliseconds as string
-
             else:
                 print("Error: Invalid pH value")
         except ValueError:
             print(ph_data)
 
-def calculate_chlorine_needed(current_ph, desired_ph, pool_volume):
-# Define constants
-    dilution_factor = 10  # Dilution factor for household bleach (1:10 ratio)
-    chlorine_concentration = 0.5  # Assume chlorine concentration in g/L (household bleach 5%)
-    desired_ph_lower_bound = 7.0  # Lower bound for desired pH
-    desired_ph_upper_bound = 7.6  # Upper bound for desired pH
 
-    # Ensure desired pH is within acceptable range
-    if desired_ph < desired_ph_lower_bound or desired_ph > desired_ph_upper_bound:
-        raise ValueError("Desired pH must be between 7.0 and 7.6")
-
-    # Calculate the difference in pH levels
-    ph_difference = desired_ph - current_ph
-
-    # Calculate the amount of chlorine needed to adjust pH
-    chlorine_needed = (ph_difference * pool_volume * dilution_factor) / chlorine_concentration
-
-    return chlorine_needed
