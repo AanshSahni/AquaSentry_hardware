@@ -3,6 +3,8 @@
 #define WaterPump2Pin 10 //in water
 #define WaterPump3Pin 11 //chlorine solution
 String incomingData;
+String incomingsize;
+
 unsigned long int avgValue;
 float b;
 int buff[10],temp;
@@ -16,6 +18,8 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) {
     incomingData = Serial.readStringUntil('\n');
+    incomingsize = Serial.readStringUntil("\n");
+
     if(incomingData=="A"){
       Serial.println("Adjusting water as too acidic...");
       digitalWrite(WaterPump1Pin, HIGH); // Turn on water pump 1
