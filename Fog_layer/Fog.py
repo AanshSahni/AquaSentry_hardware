@@ -1,5 +1,17 @@
 import serial.tools.list_ports
-import time
+
+start = True
+
+size_dict = {'demo': 1, 'small': 2, 'medium': 3, 'large': 4}
+
+fire_size = "demo"
+
+pool_size = None
+
+for size, num in size_dict.items(): 
+    if size == fire_size:
+        pool_size = num
+
 
 ports = serial.tools.list_ports.comports()
 serialInst = serial.Serial()
@@ -17,15 +29,7 @@ for x in range(0,len(portList)):
         portVar = "COM" + str(val)
         print(portList[x])
 
-serialInst.baudrate = 9600
-serialInst.port = portVar
-serialInst.open()
-dilution_factor = 5.6 
-desired_pH = 7.4
-Volume = 1.4
-chlorine_concentration = 5000
-
-while True:
+while (start):
     if serialInst.in_waiting:
         # Read pH data from Arduino
         ph_data = serialInst.readline().decode('utf-8').strip()
@@ -38,12 +42,15 @@ while True:
             if 7.20 <= ph <= 7.60:
                 print("The pH of the pool is optimal")
                 serialInst.write("O".encode())
-            elif ph < 5.20:
+                serialInst.write(pool_size.encode())
+            elif ph < 7.20:
                 print("The pool is too acidic")
                 serialInst.write("A".encode())
-            elif ph > 9.0:
+                serialInst.write(pool_size.encode())
+            elif ph > 7.60:
                 print("The pool is too basic")
                 serialInst.write("B".encode())
+                serialInst.write(pool_size.encode())
             else:
                 print("Error: Invalid pH value")
         except ValueError:
