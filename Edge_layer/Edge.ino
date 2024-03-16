@@ -1,7 +1,7 @@
 #define SensorPin A0
-#define WaterPump1Pin 9
-#define WaterPump2Pin 10
-#define WaterPump3Pin 11
+#define WaterPump1Pin 9 //out water
+#define WaterPump2Pin 10 //in water
+#define WaterPump3Pin 11 //chlorine solution
 String incomingData;
 unsigned long int avgValue;
 float b;
@@ -27,9 +27,10 @@ void loop() {
     else if(incomingData=="B"){
       Serial.println("Adjusting water as too basic...");
       digitalWrite(WaterPump1Pin, HIGH); // Turn on water pump 1
-      digitalWrite(WaterPump3Pin, HIGH); // Turn on water pump 3
-      delay(500);
+      delay(10);
       digitalWrite(WaterPump1Pin,LOW);
+      digitalWrite(WaterPump3Pin, HIGH); // Turn on water pump 3
+      delay(100);
       digitalWrite(WaterPump3Pin,LOW);
     }
     else if(incomingData=="O"){
