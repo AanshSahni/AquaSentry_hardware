@@ -6,7 +6,6 @@ String incomingData;
 unsigned long int avgValue;
 float b;
 int buff[10],temp;
-// float calibration_value = 21.34;
 float calibrationValue = 3.00;
 
 
@@ -18,16 +17,20 @@ void loop() {
   if (Serial.available() > 0) {
     incomingData = Serial.readStringUntil('\n');
     if(incomingData=="A"){
-      Serial.println("Turn on water out and water in");
+      Serial.println("Adjusting water as too acidic...");
       digitalWrite(WaterPump1Pin, HIGH); // Turn on water pump 1
       digitalWrite(WaterPump2Pin, HIGH); // Turn on water pump 2
-      delay(1000);
+      delay(500);
+      digitalWrite(WaterPump1Pin,LOW);
+      digitalWrite(WaterPump2Pin,LOW);
     }
     else if(incomingData=="B"){
-      Serial.println("Turning on water out and chlorine in");
+      Serial.println("Adjusting water as too basic...");
       digitalWrite(WaterPump1Pin, HIGH); // Turn on water pump 1
       digitalWrite(WaterPump3Pin, HIGH); // Turn on water pump 3
-      delay(1000);
+      delay(500);
+      digitalWrite(WaterPump1Pin,LOW);
+      digitalWrite(WaterPump3Pin,LOW);
     }
     else if(incomingData=="O"){
       Serial.println("All Good");

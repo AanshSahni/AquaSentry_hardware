@@ -34,11 +34,10 @@ while True:
         try:
             ph = float(ph_data)
             print("pH:", ph_data)
-            ph = float(ph_data)_
+            ph = float(ph_data)
             if 7.20 <= ph <= 7.60:
                 print("The pH of the pool is optimal")
                 serialInst.write("O".encode())
-                serialInst.write(b'')  # Placeholder for empty delay
             elif ph < 5.20:
                 print("The pool is too acidic")
                 serialInst.write("A".encode())
