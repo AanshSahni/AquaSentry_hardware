@@ -35,6 +35,8 @@ Components Required:
   8. Centralized Computer/Raspberry Pi
   
 System Architecture:
+![image](https://github.com/AanshSahni/AquaSentry_hardware/assets/127657476/3500f302-2371-4651-81a9-0d9450c543cf)
+
 
 The Aqua Sentry system is designed using a layered architecture consisting of edge, fog, and cloud layers. Each layer has distinct responsibilities to ensure efficient data collection, analysis, and control for maintaining optimal water quality in swimming pools.
   1. Edge Layer:
